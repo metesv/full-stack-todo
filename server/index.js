@@ -12,6 +12,6 @@ db.once('open', () => console.log('Connected to database'));
 app.use(express.json());
 
 const todosRouter = require('./routes/todos');
-app.use('/todos', todosRouter);
+app.use('/', todosRouter);
 
 app.listen(5000, () => console.log('Server started'));

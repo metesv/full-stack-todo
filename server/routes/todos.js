@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Todo = require('../models/todo');
+const { getAllTodos, saveTodo, updateTodo, deleteTodo } = require('../controllers/todos');
 
 const getTodo = async (req, res, next) => {
     let todo;
@@ -18,67 +19,20 @@ const getTodo = async (req, res, next) => {
     next()
 }
 
-router.get('/', async (req, res) => {
-    try {
-        let todos = await Todo.find();
-
-        res.send(todos).status(200);
-    } catch (error) {
-        console.log(error);
-    }
+router.get('/', (req, res) => {
+    getAllTodos(req, res);
 })
 
-router.get('/:id', getTodo, (req, res) => {
-    res.send(res.todo);
-})
-
-router.post('/', async (req, res) => {
-    const { title, description, author } = req.body;
-
-    const todo = new Todo({
-        title,
-        description,
-        author
-    })
-
-    try {
-        const newTodo = await todo.save();
-        res.status(201).json(newTodo)
-    } catch (error) {
-        res.status(400).json({ message: error.message })
-    }
+router.post('/', (req, res) => {
+    saveTodo(req, res);
 })
 
 router.patch('/:id', getTodo, async (req, res) => {
-    const { id: _id } = req.params;
-
-    const { title, description, author, status } = req.body;
-
-    const newTodo = {
-        title,
-        description,
-        author,
-        status
-    }
-
-    try {
-        const todo = await Todo.findOneAndUpdate({ _id }, { $set: newTodo });
-
-        res.json(todo);
-    } catch (error) {
-        console.log(error);
-    }
+    updateTodo(req, res);
 })
 
 router.delete('/:id', getTodo, async (req, res) => {
-    try {
-        const { id: _id } = req.params;
-
-        const todo = await Todos.findOneAndDelete({ _id });
-        res.json(todo);
-    } catch (error) {
-        console.log(error);
-    }
+    deleteTodo(req, res);
 })
 
 module.exports = router;
