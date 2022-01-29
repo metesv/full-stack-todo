@@ -25,8 +25,7 @@ function TodoItem({ id, title, author, completed }) {
                     checked={completed}
                     onChange={handleCheckboxChange}
                 />
-                <span>{title}</span>
-                <span>{author}</span>
+                <span>{`${title}(${author})`}</span>
                 <IconButton
                     color="secondary"
                     aria-label="Delete"

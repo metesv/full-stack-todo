@@ -11,11 +11,10 @@ const getAllTodos = async (req, res) => {
 }
 
 const saveTodo = async (req, res) => {
-    const { title, description, author } = req.body;
+    const { title, author } = req.body;
 
     const todo = new Todo({
         title,
-        description,
         author
     })
 
@@ -30,11 +29,10 @@ const saveTodo = async (req, res) => {
 const updateTodo = async (req, res) => {
     const { id: _id } = req.params;
 
-    const { title, description, author, status } = req.body;
+    const { title, author, status } = req.body;
 
     const newTodo = {
         title,
-        description,
         author,
         status
     }
