@@ -1,16 +1,18 @@
 import React, { useEffect } from 'react';
 import { Grid } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
-import { getTodosAsync } from '../features/todoSlice';
+import { getTodos } from '../actions/todos';
 import TodoItem from './TodoItem';
 
 function List() {
+    const todos = useSelector((state) => state.todos);
     const dispatch = useDispatch();
-    const todos = useSelector((state) => state.todos.todoList);
 
     useEffect(() => {
-        dispatch(getTodosAsync());
+        dispatch(getTodos());
     }, [dispatch]);
+
+    console.log(todos);
 
     return (
         <Grid container>

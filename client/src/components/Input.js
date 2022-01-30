@@ -1,38 +1,23 @@
 import { useDispatch } from 'react-redux';
-import { addTodo } from '../features/todoSlice';
 import { Grid, Card, TextField, Button } from '@mui/material';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import { createTodo } from '../actions/todos';
 
 function Input() {
     const dispatch = useDispatch();
-
-    // const addInput = () => {
-
-    //     dispatch(saveTodo({
-    //         item: input,
-    //         done: false,
-    //         id: Date.now
-    //     }));
-    // }
 
     return (
         <Formik
             initialValues={{ title: '', author: '' }}
             validationSchema={
                 Yup.object().shape({
-                    title: Yup.string().max(255).required('Required'),
-                    author: Yup.string().max(255).required('Required')
+                    title: Yup.string().max(45).required('Required'),
+                    author: Yup.string().max(35).required('Required')
                 })
             }
             onSubmit={async (values)=> {
-                const { title, author } = values;
-                dispatch(
-                    addTodo({
-                        title,
-                        author
-                    })
-                )
+                dispatch(createTodo(values));
             }}
         >
             {({
