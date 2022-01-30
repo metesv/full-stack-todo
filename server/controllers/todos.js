@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Todo = require('../models/todo');
 
 const getAllTodos = async (req, res) => {
@@ -29,6 +30,8 @@ const saveTodo = async (req, res) => {
 const updateTodo = async (req, res) => {
     const { id: _id } = req.params;
 
+    if (!mongoose.Types.ObjectId.isValid(_id)) return res.status(404).send('Invalid id');
+
     const { title, author, status } = req.body;
 
     const newTodo = {
@@ -48,9 +51,12 @@ const updateTodo = async (req, res) => {
 
 const deleteTodo = async (req, res) => {
     try {
-        const { id: _id } = req.params;
+        const { id } = req.params;
+        
+        if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send('Invalid id');
 
-        const todo = await Todos.findOneAndDelete({ _id });
+        const todo = await Todo.findOneAndDelete({ id });
+
         res.json(todo);
     } catch (error) {
         console.log(error);

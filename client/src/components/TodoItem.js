@@ -1,17 +1,19 @@
 import React from 'react';
 // import { useDispatch } from 'react-redux';
-import { Delete } from "@material-ui/icons";
+import { Delete, Edit } from "@material-ui/icons";
 import { Grid, Paper, IconButton, Checkbox } from "@material-ui/core";
+import { useDispatch } from 'react-redux';
+import { deleteTodo } from '../actions/todos';
 
 function TodoItem({ id, title, author, completed }) {
-    // const dispatch = useDispatch();
+    const dispatch = useDispatch();
 
     const handleCheckboxChange = () => {
         // dispatch(toggleComplete({ id, completed: !completed }))
     }
 
     const handleDeleteClick = () => {
-        // dispatch(deleteTodo({ id }))
+        dispatch(deleteTodo(id));
     }
 
     return (
@@ -25,6 +27,13 @@ function TodoItem({ id, title, author, completed }) {
                     onChange={handleCheckboxChange}
                 />
                 <span>{`${title}(${author})`}</span>
+                <IconButton
+                    color="secondary"
+                    aria-label="Delete"
+                    onClick={() => console.log('edit')}
+                >
+                    <Edit fontSize="small" />
+                </IconButton>
                 <IconButton
                     color="secondary"
                     aria-label="Delete"

@@ -15,7 +15,7 @@ function List() {
     console.log(todos);
 
     return (
-        <Grid container>
+        <Grid alignItems="stretch" container>
             {
                 todos?.map(({ _id, title, author, completed }) => (
                     <TodoItem key={_id} id={_id} title={title} author={author} completed={completed} />
