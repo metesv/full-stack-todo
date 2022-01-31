@@ -28,20 +28,21 @@ const saveTodo = async (req, res) => {
 }
 
 const updateTodo = async (req, res) => {
-    const { id: _id } = req.params;
+    const { id } = req.params;
 
-    if (!mongoose.Types.ObjectId.isValid(_id)) return res.status(404).send('Invalid id');
+    if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send('Invalid id');
 
     const { title, author, status } = req.body;
 
     const newTodo = {
+        _id: id,
         title,
         author,
         status
     }
 
     try {
-        const todo = await Todo.findOneAndUpdate({ _id }, { $set: newTodo });
+        const todo = await Todo.findByIdAndUpdate(id, newTodo, { new: true });
 
         res.json(todo);
     } catch (error) {
