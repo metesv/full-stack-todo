@@ -1,11 +1,13 @@
 import React from 'react';
-import { Delete, Edit } from "@material-ui/icons";
-import { Grid, Card, IconButton, Checkbox, Container, CardContent, Box, Typography } from "@material-ui/core";
+import { Delete, Edit, Help } from "@material-ui/icons";
+import { Grid, Card, IconButton, Checkbox, Container, CardContent, Box, Typography, Tooltip } from "@material-ui/core";
 import { useDispatch } from 'react-redux';
+import { DateTime } from 'luxon';
 import { deleteTodo, updateTodo } from '../actions/todos';
 
-function TodoItem({ id, title, author, status }) {
+function TodoItem({ id, title, author, status, createdAt }) {
     const dispatch = useDispatch();
+    const { c } = DateTime.fromISO(createdAt);
 
     const handleCheckboxChange = () => {
         const newTodo = {
@@ -54,6 +56,12 @@ function TodoItem({ id, title, author, status }) {
                             >
                                 <Delete fontSize="small" />
                             </IconButton>
+                            <Tooltip
+                                placement='top-end'
+                                title={`${c.day}/${c.month}/${c.year}`}
+                            >
+                                <Help />
+                            </Tooltip>
                         </Box>
                     </CardContent>
                 </Card>
