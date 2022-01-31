@@ -1,12 +1,14 @@
-import React from 'react';
-import { Delete, Edit, Help } from "@material-ui/icons";
+import React, { useState } from 'react';
+import { Delete, Edit, Help, Close } from "@material-ui/icons";
 import { Grid, Card, IconButton, Checkbox, Container, CardContent, Box, Typography, Tooltip } from "@material-ui/core";
 import { useDispatch } from 'react-redux';
 import { DateTime } from 'luxon';
 import { deleteTodo, updateTodo } from '../actions/todos';
+import Input from './Input';
 
 function TodoItem({ id, title, author, status, createdAt }) {
     const dispatch = useDispatch();
+    const [editMode, setEditMode] = useState(false);
     const { c } = DateTime.fromISO(createdAt);
 
     const handleCheckboxChange = () => {
@@ -18,6 +20,10 @@ function TodoItem({ id, title, author, status, createdAt }) {
         }
         
         dispatch(updateTodo(id, newTodo));
+    }
+
+    const handleEditClick = () => {
+        setEditMode(!editMode);
     }
 
     const handleDeleteClick = () => {
@@ -37,17 +43,29 @@ function TodoItem({ id, title, author, status, createdAt }) {
                             checked={status}
                             onChange={handleCheckboxChange}
                         />
-                        <Box>
-                            <Typography align="center" variant="subtitle1">{title}</Typography>
-                            <Typography align="center" variant="subtitle2">{author}</Typography>
-                        </Box>
+                        {
+                            editMode === true ? (
+                                <Input mode="edit" id={id} title={title} author={author} setEditMode={setEditMode} />
+                            ) : (
+                                <Box>
+                                    <Typography align="center" variant="subtitle1">{title}</Typography>
+                                    <Typography align="center" variant="subtitle2">{author}</Typography>
+                                </Box>
+                            )
+                        }
                         <Box>
                             <IconButton
                                 color="secondary"
                                 aria-label="Edit"
-                                onClick={() => console.log('edit')}
+                                onClick={handleEditClick}
                             >
-                                <Edit fontSize="small" />
+                                {
+                                    editMode === false ? (
+                                        <Edit fontSize="medium" />
+                                    ) : (
+                                        <Close fontSize="medium" />
+                                    )
+                                }
                             </IconButton>
                             <IconButton
                                 color="secondary"

@@ -8,7 +8,7 @@ function App() {
   return (
     <div className="App">
       <Box>
-        <Input />
+        <Input mode="create" />
         <List />
       </Box>
     </div>

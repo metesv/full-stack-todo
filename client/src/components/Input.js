@@ -1,15 +1,23 @@
 import { useDispatch } from 'react-redux';
-import { Grid, Card, TextField, Button } from '@mui/material';
+import { Save } from "@material-ui/icons";
+import { Grid, Card, TextField, Button, IconButton } from '@mui/material';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import { createTodo } from '../actions/todos';
+import { createTodo, updateTodo } from '../actions/todos';
 
-function Input() {
+function Input({ id, mode, title, author, setEditMode }) {
     const dispatch = useDispatch();
+    let initialValues = {};
+
+    if (mode === 'create') {
+        initialValues = { title: '', author: '' }
+    } else if (mode === 'edit') {
+        initialValues = {title, author}
+    }
 
     return (
         <Formik
-            initialValues={{ title: '', author: '' }}
+            initialValues={initialValues}
             validationSchema={
                 Yup.object().shape({
                     title: Yup.string().max(45).required('Required'),
@@ -17,7 +25,12 @@ function Input() {
                 })
             }
             onSubmit={async (values)=> {
-                dispatch(createTodo(values));
+                if (mode === 'create') {
+                    dispatch(createTodo(values));
+                } else if (mode === 'edit') {
+                    dispatch(updateTodo(id, values));
+                    setEditMode(false);
+                }
             }}
         >
             {({
@@ -58,14 +71,26 @@ function Input() {
                                 />
                             </Grid>
                             <Grid item md={2} xs={12}>
-                                <Button
-                                    sx={{ m: 1 }}
-                                    color='primary'
-                                    variant='contained'
-                                    onClick={() => handleSubmit()}
-                                >
-                                    Add!
-                                </Button>
+                            {
+                                mode === 'edit' ? (
+                                    <IconButton
+                                        color="secondary"
+                                        aria-label="Edit"
+                                        onClick={() => handleSubmit()}
+                                    >
+                                        <Save fontSize="large" />
+                                    </IconButton>
+                                ) : (
+                                    <Button
+                                        sx={{ m: 1 }}
+                                        color='primary'
+                                        variant='contained'
+                                        onClick={() => handleSubmit()}
+                                    >
+                                        Add!
+                                    </Button>
+                                )
+                            }
                             </Grid>
                         </Grid>
                     </Card>
