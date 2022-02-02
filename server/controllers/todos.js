@@ -35,7 +35,6 @@ const updateTodo = async (req, res) => {
     const { title, author, status } = req.body;
 
     const newTodo = {
-        _id: id,
         title,
         author,
         status
