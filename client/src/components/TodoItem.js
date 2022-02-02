@@ -40,7 +40,7 @@ function TodoItem({ id, title, author, status, createdAt }) {
     }
 
     const handleEditClick = () => {
-        setEditMode(!editMode);
+        setEditMode((prevMode) => !prevMode);
     }
 
     const handleDeleteClick = () => {
