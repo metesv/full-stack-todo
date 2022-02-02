@@ -5,6 +5,14 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { createTodo, updateTodo } from '../actions/todos';
 
+const styles = {
+    Card: { 
+        backgroundColor: 'whitesmoke', 
+        border: '1px black solid', 
+        padding: 20 
+    }
+}
+
 function Input({ id, mode, title, author, setEditMode }) {
     const dispatch = useDispatch();
     let initialValues = {};
@@ -24,9 +32,10 @@ function Input({ id, mode, title, author, setEditMode }) {
                     author: Yup.string().max(35).required('Required')
                 })
             }
-            onSubmit={async (values)=> {
+            onSubmit={async (values, { resetForm })=> {
                 if (mode === 'create') {
                     dispatch(createTodo(values));
+                    resetForm({});
                 } else if (mode === 'edit') {
                     dispatch(updateTodo(id, values));
                     setEditMode(false);
@@ -42,7 +51,7 @@ function Input({ id, mode, title, author, setEditMode }) {
                 values
             }) => (
                 <form onSubmit={handleSubmit}>
-                    <Card sx={{ p: 1 }}>
+                    <Card style={styles.Card} sx={{ p: 1 }}>
                         <Grid container spacing={3}>
                             <Grid item md={12} xs={12}>
                                 <TextField

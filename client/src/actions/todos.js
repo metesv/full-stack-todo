@@ -35,7 +35,6 @@ export const deleteTodo = (id) => async (dispatch) => {
 export const updateTodo = (id, todo) => async (dispatch) => {
   try {
     const { data } = await api.updateTodo(id, todo);
-    console.log(data);
 
     dispatch({ type: UPDATE, payload: data });
   } catch (error) {

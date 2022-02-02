@@ -6,6 +6,23 @@ import { DateTime } from 'luxon';
 import { deleteTodo, updateTodo } from '../actions/todos';
 import Input from './Input';
 
+const styles = {
+    Card: { 
+        marginTop: 35,
+        background: "whitesmoke",
+        border: "1px black solid"
+    },
+    CheckedCard: { 
+        marginTop: 35,
+        background: "darkgray",
+        border: "1px black solid"
+    },
+    CardContent: { 
+        display: 'flex', 
+        justifyContent: 'space-between'
+    }
+}
+
 function TodoItem({ id, title, author, status, createdAt }) {
     const dispatch = useDispatch();
     const [editMode, setEditMode] = useState(false);
@@ -36,9 +53,9 @@ function TodoItem({ id, title, author, status, createdAt }) {
                 <Card 
                     className="root"
                     variant="outlined"
-                    style={{ marginTop: 35, background: "lightgray" }}
+                    style={status === true ? styles.CheckedCard : styles.Card}
                 >
-                    <CardContent style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <CardContent style={styles.CardContent}>
                         <Checkbox
                             checked={status}
                             onChange={handleCheckboxChange}
@@ -48,7 +65,13 @@ function TodoItem({ id, title, author, status, createdAt }) {
                                 <Input mode="edit" id={id} title={title} author={author} setEditMode={setEditMode} />
                             ) : (
                                 <Box>
-                                    <Typography align="center" variant="subtitle1">{title}</Typography>
+                                    <Typography
+                                        style={status === true ? { textDecoration: 'line-through' } : { textDecoration: 'none' }} 
+                                        align="center" 
+                                        variant="subtitle1"
+                                    >
+                                        {title}
+                                    </Typography>
                                     <Typography align="center" variant="subtitle2">{author}</Typography>
                                 </Box>
                             )
@@ -72,11 +95,11 @@ function TodoItem({ id, title, author, status, createdAt }) {
                                 aria-label="Delete"
                                 onClick={handleDeleteClick}
                             >
-                                <Delete fontSize="small" />
+                                <Delete fontSize="medium" />
                             </IconButton>
                             <Tooltip
                                 placement='top-end'
-                                title={`${c.day}/${c.month}/${c.year}`}
+                                title={`Created At: ${c.day}/${c.month}/${c.year}`}
                             >
                                 <Help />
                             </Tooltip>

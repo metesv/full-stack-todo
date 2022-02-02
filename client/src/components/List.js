@@ -12,8 +12,6 @@ function List() {
         dispatch(getTodos());
     }, [dispatch]);
 
-    console.log(todos);
-
     return (
         <Grid alignItems="stretch" container>
             {
